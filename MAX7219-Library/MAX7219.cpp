@@ -1,7 +1,6 @@
 #include "MAX7219.hpp"
 
-MAX7219::MAX7219(pin_out& clk_pin, pin_out& din_pin, pin_out& load_pin, int amount_matricis)
-    : clk(clk_pin), din(din_pin), load(load_pin)(amount_matricis) {}
+MAX7219::MAX7219(pin_out& clk_pin, pin_out& din_pin, pin_out& load_pin) : clk(clk_pin), din(din_pin), load(load_pin) {}
 
 uint16_t MAX7219::createDataBytes(const MAX7219_register& reg, uint8_t right_side) {
   uint8_t left_side = static_cast<uint8_t>(reg);
@@ -49,12 +48,12 @@ void MAX7219::initialize() {
 }
 
 void MAX7219::clear() {
-  sendData(MAX7219_register::column0, 0x00);
-  sendData(MAX7219_register::column1, 0x00);
-  sendData(MAX7219_register::column2, 0x00);
-  sendData(MAX7219_register::column3, 0x00);
-  sendData(MAX7219_register::column4, 0x00);
-  sendData(MAX7219_register::column5, 0x00);
-  sendData(MAX7219_register::column6, 0x00);
-  sendData(MAX7219_register::column7, 0x00);
+  sendData(MAX7219_register::row0, 0x00);
+  sendData(MAX7219_register::row1, 0x00);
+  sendData(MAX7219_register::row2, 0x00);
+  sendData(MAX7219_register::row3, 0x00);
+  sendData(MAX7219_register::row4, 0x00);
+  sendData(MAX7219_register::row5, 0x00);
+  sendData(MAX7219_register::row6, 0x00);
+  sendData(MAX7219_register::row7, 0x00);
 }
