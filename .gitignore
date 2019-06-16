@@ -1,6 +1,12 @@
 # Prerequisites
 *.d
 
+#Compiled Arduino Due
+*.elf
+*.ld
+*.bin
+*.c
+
 # Compiled Object files
 *.slo
 *.lo
