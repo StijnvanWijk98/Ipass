@@ -6,6 +6,7 @@
 *.ld
 *.bin
 *.c
+*.map
 
 # Compiled Object files
 *.slo
