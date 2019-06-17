@@ -7,16 +7,22 @@ int main() {
   auto din = target::pin_out(target::pins::d8);
   auto load = target::pin_out(target::pins::d9);
 
-  MAX7219 matrix = MAX7219(clk, din, load);
+  xy size_matrix(8, 8);
+  xy test_loc(7,7);
+  // xy test_loc2(7, 2);
+
+  MAX7219 matrix = MAX7219(size_matrix, clk, din, load);
   matrix.initialize();
-  matrix.sendData(MAX7219_register::row0, 0x01);
-  matrix.sendData(MAX7219_register::row1, 0x02);
-  matrix.sendData(MAX7219_register::row2, 0x04);
-  matrix.sendData(MAX7219_register::row3, 0x08);
-  matrix.sendData(MAX7219_register::row4, 0x10);
-  matrix.sendData(MAX7219_register::row5, 0x20);
-  matrix.sendData(MAX7219_register::row6, 0x40);
-  matrix.sendData(MAX7219_register::row7, 0x80);
+
+  for(int i = 0; i < 8; i++){
+    for(int j = 0; j < 8; j++){
+      xy point(j,i);
+      matrix.write(point);
+      matrix.flush();
+      wait_ms(50);
+    }
+    if(i == 7) i = -1;
+  }
 
   return 0;
 }
