@@ -1,7 +1,7 @@
 #ifndef MAX7219_hpp
 #define MAX7219_hpp
 
-#include "constants.hpp"
+#include "MAX7219constants.hpp"
 #include "hwlib.hpp"
 
 using hwlib::color;

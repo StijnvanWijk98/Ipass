@@ -1,4 +1,5 @@
 #include "MAX7219.hpp"
+#include "windowDecorator.hpp"
 
 int main() {
   wait_ms(500);
@@ -10,22 +11,27 @@ int main() {
   xy size_matrix(8, 8);
 
   MAX7219 matrix = MAX7219(size_matrix, clk, din, load, 2, 1);
-  MAX7219 matrix2 = MAX7219(size_matrix, clk, din, load,2, 2);
+  MAX7219 matrix2 = MAX7219(size_matrix, clk, din, load, 2, 2);
   matrix.initialize(2);
-  wait_ms(500);
+  xy total_size(16, 8);
 
+  auto mir = mirror_x(matrix);
+  auto mirror = mirror_y(mir);
+  auto testing = duplicate(mirror, matrix2);
 
-  for (int i = 0; i < 8; i++) {
-    for (int j = 0; j < 8; j++) {
-      matrix.write(xy(j,i));
-      matrix.write(xy(i,j));
-      matrix.flush();
-      matrix2.write(xy(7-i,7-j));
-      matrix2.write(xy(7-j,7-i));
-      matrix2.flush();
-    }
-    if (i == 7) i = -1;
-  }
+  testing.write(xy(0, 0));
+  testing.flush();
 
+  // =============== combine test
+  // array<window*, 2> test = {&mirror, &matrix2};
+  // auto window_arr = windowDecorator::combine_windows<2>(test, 1, 2, total_size, true);
+  // for(int y = 0; y < 8; y++){
+  //   for(int x = 0; x < 16; x++){
+  //     window_arr.write(xy(x,y));
+  //     window_arr.flush();
+  //     wait_ms(50);
+  //   }
+  //   if(y == 7) y = -1;
+  // }
   return 0;
 }

@@ -1,3 +1,6 @@
+#ifndef MAX7219CONSTANTS_HPP
+#define MAX7219CONSTANTS_HPP
+
 enum class MAX7219_register {
   no_op = 0x00,
   row7,
@@ -24,3 +27,5 @@ enum class MAX7219_commands {
   intensity_base = 0x05,
   no_op = 0x00
 };
+
+#endif
