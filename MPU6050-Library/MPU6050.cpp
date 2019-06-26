@@ -26,13 +26,11 @@ namespace mpu6050 {
 
   void MPU6050::readRegister(const registers& reg) {
     uint8_t reg_address = static_cast<uint8_t>(reg);
-    // cout << "reg address read: " << reg_address << endl;
     bus.write(address).write(reg_address);
     bus.read(address).read(read_buffer);
   }
   void MPU6050::writeRegister(const registers& reg, uint8_t data) {
     uint8_t reg_address = static_cast<uint8_t>(reg);
-    // cout << "reg address write: " << reg_address << endl;
     uint8_t data_send[2] = {reg_address, data};
     bus.write(address).write(data_send, 2);
   }
