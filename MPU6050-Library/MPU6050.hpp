@@ -23,6 +23,14 @@ namespace mpu6050 {
     int16_t gyro_z;
   };
 
+  struct errorData {
+    double acc_x = 0;
+    double acc_y = 0;
+    double gyro_x = 0;
+    double gyro_y = 0;
+    double gyro_z = 0;
+  };
+
   class MPU6050 {
    private:
     i2c_bus& bus;
@@ -31,22 +39,26 @@ namespace mpu6050 {
     uint64_t time_cur;
     double lsb_acc;
     double lsb_gyro;
-
-   public:
-    // ========================= Non-essential functions =========================
-    void printReadBuffer();
-
-    // ========================= End Non-essential functions =====================
-    MPU6050(i2c_bus& bus, uint8_t address = 0x68);
-    void calibrate();
-    void setFullRange(acc_full_range range_acc = acc_full_range::range_2g,
-                      gyro_full_range range_gyro = gyro_full_range::range_250);
+    errorData errors;
 
     void readRegister(const registers& reg);
     void writeRegister(const registers& reg, uint8_t data);
-    void writeRegister(const registers& reg, const commands& pre_data);
+    void writeRegister(const registers& reg, const commands& data);
     uint16_t combineRegisters(const registers& reg_l, const registers& reg_r);
-    uint8_t readRegisterReturn(const registers& reg);
+    uint8_t readRegisterReturn(const registers& reg);  // Naam misschien veranderen
+   public:
+    // ========================= Non-essential functions =========================
+    void printReadBuffer();
+    void printErrors();
+    void whoAmI();
+
+    // ========================= End Non-essential functions =====================
+    MPU6050(i2c_bus& bus, uint8_t address = 0x68);
+
+    void calibrate(unsigned int sample_rate = 200);  // Gets error values
+    void setFullRange(acc_full_range range_acc = acc_full_range::range_2g,
+                      gyro_full_range range_gyro = gyro_full_range::range_250);
+
 
     int16_t getAccX();
     int16_t getAccY();
@@ -58,8 +70,13 @@ namespace mpu6050 {
     int16_t getGyroZ();
     gyroData getGyroAll();
 
-    int getAngleX();
-    int getAngleY();
+    int getAngleX();  // based on acc
+    int getAngleY();  // based on acc
+
+    // ============== Not yet implemented ==========================================
+    int getPitch();  // based on gyro
+    int getRoll();   // based on gyro
+    int getYaw();    // based on gyro
   };
 }  // namespace mpu6050
 

@@ -1,19 +1,42 @@
 #include "MPU6050.hpp"
 
 namespace mpu6050 {
+  // ========================= Non-essential functions =========================
+  void MPU6050::printReadBuffer() { cout << "read_buffer = " << read_buffer << endl; }
+
+  void MPU6050::whoAmI(){
+    readRegister(registers::who_am_i);
+    cout << "who am i: " << read_buffer << endl;
+  }
+  // ========================= End Non-essential functions =====================
+
   MPU6050::MPU6050(i2c_bus& bus, uint8_t address) : bus(bus), address(address), read_buffer(0) {
     time_cur = now_us();
     writeRegister(registers::power, 0x00);
     setFullRange();
   }
 
-  // ========================= Non-essential functions =========================
-  void MPU6050::printReadBuffer() { cout << "read_buffer = " << read_buffer << endl; }
+  void MPU6050::calibrate(unsigned int sample_rate) { // Threshhold feature toevoegen zodat je zeker weet dat het apperaat stil ligt
+    cout << "Calibrating, keep sensor still......" << endl;
+    double error_acc_x = 0;
+    double error_acc_y = 0;
+    double error_gyro_x = 0;
+    double error_gyro_y = 0;
+    double error_gyro_z = 0;
 
-  // ========================= End Non-essential functions =====================
-  uint8_t MPU6050::readRegisterReturn(const registers& reg) {
-    readRegister(reg);
-    return read_buffer;
+    for (unsigned int i = 0; i < sample_rate; i++) {
+      error_acc_x += getAngleX();
+      error_acc_y += getAngleY();
+      error_gyro_x = getGyroX() / lsb_gyro;
+      error_gyro_y = getGyroY() / lsb_gyro;
+      error_gyro_z = getGyroZ() / lsb_gyro;
+    }
+    errors.acc_x = (error_acc_x / sample_rate);
+    errors.acc_y = (error_acc_y / sample_rate);
+    errors.gyro_x = (error_gyro_x / sample_rate);
+    errors.gyro_y = (error_gyro_y / sample_rate);
+    errors.gyro_z = (error_gyro_z / sample_rate);
+    cout << "Calibrating done" << endl;
   }
 
   uint16_t MPU6050::combineRegisters(const registers& reg_l, const registers& reg_r) {
@@ -29,13 +52,17 @@ namespace mpu6050 {
     bus.write(address).write(reg_address);
     bus.read(address).read(read_buffer);
   }
+  uint8_t MPU6050::readRegisterReturn(const registers& reg) {
+    readRegister(reg);
+    return read_buffer;
+  }
   void MPU6050::writeRegister(const registers& reg, uint8_t data) {
     uint8_t reg_address = static_cast<uint8_t>(reg);
     uint8_t data_send[2] = {reg_address, data};
     bus.write(address).write(data_send, 2);
   }
-  void MPU6050::writeRegister(const registers& reg, const commands& pre_data) {
-    uint8_t to_send = static_cast<uint8_t>(pre_data);
+  void MPU6050::writeRegister(const registers& reg, const commands& data) {
+    uint8_t to_send = static_cast<uint8_t>(data);
     writeRegister(reg, to_send);
   }
 
@@ -91,12 +118,24 @@ namespace mpu6050 {
     return ret_struct;
   }
 
+  int16_t MPU6050::getGyroX() { return combineRegisters(registers::gyro_x1, registers::gyro_x2); }
+  int16_t MPU6050::getGyroY() { return combineRegisters(registers::gyro_y1, registers::gyro_y2); }
+  int16_t MPU6050::getGyroZ() { return combineRegisters(registers::gyro_z1, registers::gyro_z2); }
+
+  gyroData MPU6050::getGyroAll() {
+    int16_t gyro_x = getGyroX();
+    int16_t gyro_y = getGyroY();
+    int16_t gyro_z = getGyroZ();
+    gyroData ret_struct = {gyro_x, gyro_y, gyro_z};
+    return ret_struct;
+  }
+
   int MPU6050::getAngleX() {
     float pi = 3.141593;
     int16_t x = getAccX();
     int16_t y = getAccY();
     int16_t z = getAccZ();
-    return (atan(y / sqrt((x * x) + (z * z))) * 180 / pi);
+    return (atan(y / sqrt((x * x) + (z * z))) * 180 / pi) - errors.acc_x;
   }
 
   int MPU6050::getAngleY() {
@@ -104,7 +143,7 @@ namespace mpu6050 {
     int16_t x = getAccX();
     int16_t y = getAccY();
     int16_t z = getAccZ();
-    return (atan(-1 * x / sqrt((y * y) + (z * z))) * 180 / pi);
+    return (atan(-1 * x / sqrt((y * y) + (z * z))) * 180 / pi) - errors.acc_y;
   }
 
 }  // namespace mpu6050

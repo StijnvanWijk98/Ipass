@@ -3,25 +3,25 @@
 
 namespace mpu6050 {
 
-  enum class registers {
+  enum class registers {  // Name change?
     power = 0x6B,
     who_am_i = 0x75,
     gyro_config = 0x1B,
     acc_config,
     acc_x1 = 0x3B,
-    acc_x2 = 0x3C,
+    acc_x2,
     acc_y1,
     acc_y2,
     acc_z1,
     acc_z2,
     temp1 = 0x41,
-    temp2 = 0x42,
+    temp2,
     gyro_x1 = 0x43,
-    gyro_x2 = 0x44,
-    gyro_y1 = 0x45,
-    gyro_y2 = 0x46,
-    gyro_z1 = 0x47,
-    gyro_z2 = 0x48,
+    gyro_x2,
+    gyro_y1,
+    gyro_y2,
+    gyro_z1,
+    gyro_z2,
   };
 
   enum class commands {
