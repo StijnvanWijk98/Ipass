@@ -20,3 +20,5 @@ applicatie
 - Enviroment class
 - Gravity implementation
 
+clang format:
+{ BasedOnStyle: Google, IndentWidth: 2, ColumnLimit: 120, NamespaceIndentation: All, AlignTrailingComments: true, AllowShortCaseLabelsOnASingleLine: true}

@@ -42,6 +42,7 @@ class simulation {
       : window(w), size(size), mpu(mpu), particles(particles) {}
 
   void updateAcceleration();
+  
   void updateParticles() {
     for (unsigned int i = 0; i < N; i++) {
       particles[i]->updateSpeed(acceleration);
