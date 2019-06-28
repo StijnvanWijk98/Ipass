@@ -12,7 +12,7 @@
 SOURCES := MPU6050.cpp
 
 # header files in this project
-HEADERS := MPU6050.hpp MPU6050constants.hpp
+HEADERS := MPU6050.hpp MPU6050constants.hpp baseinterfaces.hpp
 
 # other places to look for files for this project
 SEARCH  := 

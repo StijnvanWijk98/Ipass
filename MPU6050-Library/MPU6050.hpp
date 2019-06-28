@@ -36,7 +36,7 @@ namespace mpu6050 {
     i2c_bus& bus;
     uint8_t address;
     uint8_t read_buffer;
-    uint64_t time_cur;
+    uint64_t time_cur;  // Not used! is for the gyro
     double lsb_acc;
     double lsb_gyro;
     errorData errors;
@@ -53,12 +53,15 @@ namespace mpu6050 {
     void whoAmI();
 
     // ========================= End Non-essential functions =====================
-    MPU6050(i2c_bus& bus, uint8_t address = 0x68);
+    MPU6050(i2c_bus& bus, uint8_t address = 0x68) : bus(bus), address(address), read_buffer(0) {
+      time_cur = now_us();
+      writeRegister(registers::power, 0x00);
+      setFullRange();
+    }
 
     void calibrate(unsigned int sample_rate = 200);  // Gets error values
     void setFullRange(acc_full_range range_acc = acc_full_range::range_2g,
                       gyro_full_range range_gyro = gyro_full_range::range_250);
-
 
     int16_t getAccX();
     int16_t getAccY();

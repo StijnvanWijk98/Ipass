@@ -15,23 +15,23 @@ int main() {
   matrix.initialize(2);
   xy total_size(16, 8);
 
-  auto mir = mirror_x(matrix);
-  auto mirror = mirror_y(mir);
-  auto testing = duplicate(mirror, matrix2);
+  // auto mir = mirror_x(matrix);
+  // auto mirror = mirror_y(mir);
+  // auto testing = duplicate(mirror, matrix2);
 
-  testing.write(xy(0, 0));
-  testing.flush();
+  // testing.write(xy(0, 0));
+  // testing.flush();
 
   // =============== combine test
-  // array<window*, 2> test = {&mirror, &matrix2};
-  // auto window_arr = windowDecorator::combine_windows<2>(test, 1, 2, total_size, true);
-  // for(int y = 0; y < 8; y++){
-  //   for(int x = 0; x < 16; x++){
-  //     window_arr.write(xy(x,y));
-  //     window_arr.flush();
-  //     wait_ms(50);
-  //   }
-  //   if(y == 7) y = -1;
-  // }
+  array<window*, 2> test = {&matrix, &matrix2};
+  auto window_arr = combine_windows<2>(test, 1, 2, total_size, true);
+  for(int y = 0; y < 8; y++){
+    for(int x = 0; x < 16; x++){
+      window_arr.write(xy(x,y));
+      window_arr.flush();
+      wait_ms(50);
+    }
+    if(y == 7) y = -1;
+  }
   return 0;
 }

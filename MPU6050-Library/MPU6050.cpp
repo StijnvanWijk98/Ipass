@@ -4,19 +4,14 @@ namespace mpu6050 {
   // ========================= Non-essential functions =========================
   void MPU6050::printReadBuffer() { cout << "read_buffer = " << read_buffer << endl; }
 
-  void MPU6050::whoAmI(){
+  void MPU6050::whoAmI() {
     readRegister(registers::who_am_i);
     cout << "who am i: " << read_buffer << endl;
   }
   // ========================= End Non-essential functions =====================
 
-  MPU6050::MPU6050(i2c_bus& bus, uint8_t address) : bus(bus), address(address), read_buffer(0) {
-    time_cur = now_us();
-    writeRegister(registers::power, 0x00);
-    setFullRange();
-  }
-
-  void MPU6050::calibrate(unsigned int sample_rate) { // Threshhold feature toevoegen zodat je zeker weet dat het apperaat stil ligt
+  void MPU6050::calibrate(
+      unsigned int sample_rate) {  // Threshhold feature toevoegen zodat je zeker weet dat het apperaat stil ligt
     cout << "Calibrating, keep sensor still......" << endl;
     double error_acc_x = 0;
     double error_acc_y = 0;

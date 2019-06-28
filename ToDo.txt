@@ -1,0 +1,22 @@
+wat moet ik nog doen voor mijn Ipass?
+
+mpu6050 library
+- Doxygen
+- Catch
+- Controleren parameter namen
+- superklasse gyro & acclerometer
+
+max7219 library
+- Doxygen
+- Catch
+- Namespace?
+- Controleren parameter namen
+
+applicatie
+- Doxygen
+- Catch
+- Opzet physics
+- Particle class
+- Enviroment class
+- Gravity implementation
+
