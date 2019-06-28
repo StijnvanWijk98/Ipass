@@ -9,10 +9,10 @@
 #############################################################################
 
 # source files in this project (main.cpp is automatically assumed)
-SOURCES := MPU6050.cpp MAX7219.cpp windowDecorator.cpp particle.cpp
+SOURCES := particle.cpp MPU6050.cpp MAX7219.cpp windowDecorator.cpp
 
 # header files in this project
-HEADERS := MPU6050.hpp MAX7219.hpp MPU6050constants.hpp MAX7219constants.hpp windowDecorator.hpp particle.hpp
+HEADERS := particle.hpp MPU6050.hpp MAX7219.hpp MPU6050constants.hpp MAX7219constants.hpp windowDecorator.hpp 
 
 # other places to look for files for this project
 SEARCH  := ../MPU6050-Library ../MAX7219-Library
