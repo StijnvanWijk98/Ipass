@@ -105,11 +105,11 @@ namespace mpu6050 {
   int16_t MPU6050::getAccY() { return combineRegisters(registers::acc_y1, registers::acc_y2); }
   int16_t MPU6050::getAccZ() { return combineRegisters(registers::acc_z1, registers::acc_z2); }
 
-  accData MPU6050::getAccAll() {
+  xyzData MPU6050::getAccAll() {
     int16_t acc_x = getAccX();
     int16_t acc_y = getAccY();
     int16_t acc_z = getAccZ();
-    accData ret_struct = {acc_x, acc_y, acc_z};
+    xyzData ret_struct = {acc_x, acc_y, acc_z};
     return ret_struct;
   }
 
@@ -117,11 +117,11 @@ namespace mpu6050 {
   int16_t MPU6050::getGyroY() { return combineRegisters(registers::gyro_y1, registers::gyro_y2); }
   int16_t MPU6050::getGyroZ() { return combineRegisters(registers::gyro_z1, registers::gyro_z2); }
 
-  gyroData MPU6050::getGyroAll() {
+  xyzData MPU6050::getGyroAll() {
     int16_t gyro_x = getGyroX();
     int16_t gyro_y = getGyroY();
     int16_t gyro_z = getGyroZ();
-    gyroData ret_struct = {gyro_x, gyro_y, gyro_z};
+    xyzData ret_struct = {gyro_x, gyro_y, gyro_z};
     return ret_struct;
   }
 

@@ -1,8 +1,26 @@
 #include "particle.hpp"
 
+void particle::updateSpeed(const xyDouble& acceleration) {
+  if ((real_pos.x <= 0 && acceleration.x < 0) || (real_pos.x >= x_max && acceleration.x > 0)) {
+    // cout << "speed in x" << endl;
+    speed.x = 0.0;
+  } else {
+    speed.x = speed.x + acceleration.x;
+  }
+  if ((real_pos.y <= 0 && acceleration.y < 0) || (real_pos.y >= y_max && acceleration.y > 0)) {
+    // cout << "speed in y" << endl;
+    speed.y = 0.0;
+  } else {
+    speed.y = speed.y + acceleration.y;
+  }
+  // int speed_x_print = speed.x;
+  // int speed_y_print = speed.y;
+  // cout << "Speed X: " << speed_x_print << " Y: " << speed_y_print << endl;
+}
+
 void particle::updatePosition() {
-  int new_x = start.x + speed.x;
-  int new_y = start.y + speed.y;
+  double new_x = real_pos.x + speed.x;
+  double new_y = real_pos.y + speed.y;
   if (new_x > x_max) {
     new_x = x_max;
   } else if (new_x < 0) {
@@ -13,21 +31,17 @@ void particle::updatePosition() {
   } else if (new_y < 0) {
     new_y = 0;
   }
-  start.x = new_x;
-  start.y = new_y;
+  real_pos.x = new_x;
+  real_pos.y = new_y;
+  // int real_pos_x_print = real_pos.x;
+  // int real_pos_y_print = real_pos.y;
+  // cout << "real_pos X: " << real_pos_x_print << " Y: " << real_pos_y_print << endl;
 }
 
-void particle::updateSpeed(const xy& acceleration) {
-  if ((start.x < 0 && acceleration.x < 0) || (start.x == x_max && acceleration.x > 0)) {
-    speed.x = 0;
-  } else {
-    speed.x = speed.x + acceleration.x;
-  }
-  if ((start.y < 0 && acceleration.y < 0) || (start.y == y_max && acceleration.y > 0)) {
-    speed.y = 0;
-  } else {
-    speed.y = speed.y + acceleration.y;
-  }
+void particle::draw(window& w) {
+  start.x = real_pos.x;
+  start.y = real_pos.y;
+  w.write(start);
 }
 
 void particle::userInput() {
@@ -62,5 +76,3 @@ void particle::userInput() {
     }
   }
 }
-
-void particle::draw(window& w) { w.write(start); }

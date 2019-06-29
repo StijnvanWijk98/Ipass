@@ -11,16 +11,10 @@ using hwlib::i2c_bus;
 using hwlib::now_us;
 
 namespace mpu6050 {
-  struct accData {
-    int16_t acc_x;
-    int16_t acc_y;
-    int16_t acc_z;
-  };
-
-  struct gyroData {
-    int16_t gyro_x;
-    int16_t gyro_y;
-    int16_t gyro_z;
+  struct xyzData {
+    int16_t x;
+    int16_t y;
+    int16_t z;
   };
 
   struct errorData {
@@ -36,10 +30,11 @@ namespace mpu6050 {
     i2c_bus& bus;
     uint8_t address;
     uint8_t read_buffer;
-    uint64_t time_cur;  // Not used! is for the gyro
     double lsb_acc;
     double lsb_gyro;
     errorData errors;
+
+    uint64_t time_cur;  // Not used! is for the gyro
 
     void readRegister(const registers& reg);
     void writeRegister(const registers& reg, uint8_t data);
@@ -66,12 +61,12 @@ namespace mpu6050 {
     int16_t getAccX();
     int16_t getAccY();
     int16_t getAccZ();
-    accData getAccAll();
+    xyzData getAccAll();
 
     int16_t getGyroX();
     int16_t getGyroY();
     int16_t getGyroZ();
-    gyroData getGyroAll();
+    xyzData getGyroAll();
 
     int getAngleX();  // based on acc
     int getAngleY();  // based on acc

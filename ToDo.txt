@@ -5,6 +5,9 @@ mpu6050 library
 - Catch
 - Controleren parameter namen
 - superklasse gyro & acclerometer
+-- Een direction_interface class
+-- Een functie die een struct returned met een xyz waarde
+-- Is wel lastig want dan moet je altijd de vertaal slag maken van rauwe data naar nuttige info
 
 max7219 library
 - Doxygen
@@ -19,6 +22,7 @@ applicatie
 - Particle class
 - Enviroment class
 - Gravity implementation
+- Wil ik echt werken met doubles? Dit kan ik pas besluiten als ik zie hoe het programma runt met ints en met doubles
 
 clang format:
 { BasedOnStyle: Google, IndentWidth: 2, ColumnLimit: 120, NamespaceIndentation: All, AlignTrailingComments: true, AllowShortCaseLabelsOnASingleLine: true}
