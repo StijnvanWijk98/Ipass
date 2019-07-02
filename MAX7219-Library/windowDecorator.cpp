@@ -1,3 +1,16 @@
+// ==========================================================================
+//
+// Author    : Stijn van Wijk
+// File      : windowDecorator.cpp
+// Part of   : C++ hwlib windowdecorator library
+// Copyright : stijn.vanwijk@student.hu.nl 2019
+//
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at 
+// http://www.boost.org/LICENSE_1_0.txt)
+//
+// ==========================================================================
+
 #include "windowDecorator.hpp"
 
 void duplicate::clear() {
