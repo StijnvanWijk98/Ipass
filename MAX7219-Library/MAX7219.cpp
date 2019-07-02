@@ -1,36 +1,5 @@
 #include "MAX7219.hpp"
 
-// ================== Functions between comments are not needed in final library =========================
-/*
- * This prints out an uint16_t, used to print out the data that is sent to the MAX7219
- */
-void MAX7219::debugPrintData(uint16_t to_print) {
-  for (int i = 15; i >= 0; i--) {
-    cout << "i:" << i << '-' << (to_print & (1 << i)) << endl;
-  }
-}
-
-/*
- * This prints out the writebuffer in 0/1, when a row is only 0 dont write it.
- * It is printed as it is shown on screen/ matrix.
- */
-void MAX7219::debugWriteBuffer() {
-  cout << "Writebuffer:" << write_buffer << endl;
-  for (int i = 0; i < 8; i++) {
-    uint64_t res_shift = bigShiftRight(write_buffer, i * 8);
-    uint8_t onerow = (res_shift & 0xFF);
-    if (onerow == 0) continue;
-    cout << "i:" << i << " row:" << onerow << endl;
-    for (int j = 0; j < 8; j++) {
-      bool bit = onerow & (1 << j);
-      cout << bit;
-    }
-    cout << endl;
-  }
-}
-
-// ================== End non-essential functions ========================================================
-
 uint64_t MAX7219::bigShiftLeft(const uint64_t& start_value, int n) {
   uint64_t ret_value = start_value;
   while (n > 16) {

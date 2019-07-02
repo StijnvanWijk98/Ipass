@@ -40,10 +40,6 @@ class MAX7219 : public window {
   array<MAX7219_register, 8> rows = {MAX7219_register::row0, MAX7219_register::row1, MAX7219_register::row2,
                                      MAX7219_register::row3, MAX7219_register::row4, MAX7219_register::row5,
                                      MAX7219_register::row6, MAX7219_register::row7};
-  // =============== Non-essential functions =======================
-  void debugWriteBuffer();
-  void debugPrintData(uint16_t to_print);
-  // =============== End non-essential functions ===================
 
   /// \brief
   /// Shift uint64_t n*left
@@ -102,17 +98,17 @@ class MAX7219 : public window {
   /// \brief
   /// Constructor MAX7219
   /// \details
-  /// The constructor creates the data object.
+  /// The constructor creates a MAX7219 object.
   /// You are obligated to give the windowsize and the three pins.
   /// If the MAX7219 is used in a daisychain you are obligated to give the daisychain length and position.
   /// dc stands for daisychain.
-  MAX7219(xy size, pin_out& clk_pin, pin_out& din_pin, pin_out& load_pin, unsigned int dc_number = 1,
+  MAX7219(xy size, pin_out& clk_pin, pin_out& din_pin, pin_out& load_pin, unsigned int dc_length = 1,
           unsigned int dc_pos = 1)
       : window(size),
         clk(clk_pin),
         din(din_pin),
         load(load_pin),
-        daisychain_length(dc_number),
+        daisychain_length(dc_length),
         daisychain_position(dc_pos) {}
 
   /// \brief
