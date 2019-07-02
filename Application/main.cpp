@@ -10,24 +10,38 @@ int main() {
   auto din = target::pin_out(target::pins::d7);
   auto i2c_bus = hwlib::i2c_bus_bit_banged_scl_sda(scl, sda);
 
-  xy size_matrix(8, 8);
-  auto matrix = MAX7219(size_matrix, clk, din, load, 1, 1);
+  xy size_matrix(16, 8);
+  xy size(8,8);
+  auto matrix = MAX7219(size, clk, din, load, 2, 1);
+  auto matrix2 = MAX7219(size, clk, din, load, 2,2);
+  
+  array<window*, 2> windows = {&matrix, &matrix2};
+  auto screen = combine_windows<2>(windows, 1, 2, size_matrix, true);
   matrix.initialize();
+  screen.clear();
 
   auto mpu = mpu6050::MPU6050(i2c_bus);
+  mpu.whoAmI();
 
-  particle p1 = particle(xy(5, 4), size_matrix);
-  array<particle*, 1> arr = {&p1};
+  particle p0 = particle(xy(1, 1), size_matrix);
+  particle p1 = particle(xy(2, 1), size_matrix);
+  particle p2 = particle(xy(3, 1), size_matrix);
+  particle p3 = particle(xy(4, 1), size_matrix);
+  particle p4 = particle(xy(5, 1), size_matrix);
+  particle p5 = particle(xy(1, 2), size_matrix);
+  particle p6 = particle(xy(2, 2), size_matrix);
+  particle p7 = particle(xy(3, 2), size_matrix);
+  particle p8 = particle(xy(4, 2), size_matrix);
+  particle p9 = particle(xy(5, 2), size_matrix);
+  array<particle*, 10> arr = {&p0, &p1, &p2, &p3, &p4, &p5, &p6, &p7, &p8, &p9};
 
-  auto simu = simulation<1>(matrix, mpu, arr);
+  auto simu = simulation<10>(screen, mpu, arr, 30);
   simu.drawParticles();
 
   for (;;) {
-    // wait_ms(1000);  // Debug speed
-    wait_ms(50);
-    simu.updateAcceleration();
+    simu.updateAcceleration();  // 5000 mus n=2 with mpu
     simu.updateParticles();
-    simu.drawParticles();
+    simu.drawParticles();  // 3000 mus for n=2
   }
 
   return 0;

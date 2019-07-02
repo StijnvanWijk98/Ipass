@@ -1,6 +1,13 @@
 #ifndef MAX7219CONSTANTS_HPP
 #define MAX7219CONSTANTS_HPP
 
+/// @file
+
+/// \brief
+/// MAX7219 register address
+/// \details
+/// This enum class contains the MAX7219 register addresses.
+/// This enum class is used in the MAX7219 library.
 enum class MAX7219_register {
   no_op = 0x00,
   row7,
@@ -18,6 +25,11 @@ enum class MAX7219_register {
   display_test = 0x0F
 };
 
+/// \brief
+/// MAX7219 commands
+/// \details
+/// This enum class contains some of the basic MAX7219 commands.
+/// This enum class is used in the MAX7219 library.
 enum class MAX7219_commands {
   display_normal = 0x00,
   display_test = 0x01,

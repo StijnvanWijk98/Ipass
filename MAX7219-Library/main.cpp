@@ -12,7 +12,7 @@ int main() {
 
   MAX7219 matrix = MAX7219(size_matrix, clk, din, load, 2, 1);
   MAX7219 matrix2 = MAX7219(size_matrix, clk, din, load, 2, 2);
-  matrix.initialize(2);
+  matrix.initialize();
   xy total_size(16, 8);
 
   // auto mir = mirror_x(matrix);

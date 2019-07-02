@@ -126,7 +126,6 @@ namespace mpu6050 {
   }
 
   int MPU6050::getAngleX() {
-    float pi = 3.141593;
     int16_t x = getAccX();
     int16_t y = getAccY();
     int16_t z = getAccZ();
@@ -134,7 +133,6 @@ namespace mpu6050 {
   }
 
   int MPU6050::getAngleY() {
-    float pi = 3.141593;
     int16_t x = getAccX();
     int16_t y = getAccY();
     int16_t z = getAccZ();

@@ -33,6 +33,7 @@ namespace mpu6050 {
     double lsb_acc;
     double lsb_gyro;
     errorData errors;
+    float pi = 3.141593;
 
     uint64_t time_cur;  // Not used! is for the gyro
 

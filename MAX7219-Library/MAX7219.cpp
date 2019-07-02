@@ -31,31 +31,23 @@ void MAX7219::debugWriteBuffer() {
 
 // ================== End non-essential functions ========================================================
 
-/*
- * This function returns the start value shifted to the left by shift_number.
- * Use this function when you want to shift above 30.
- */
-uint64_t MAX7219::bigShiftLeft(const uint64_t& start_value, int shift_number) {
+uint64_t MAX7219::bigShiftLeft(const uint64_t& start_value, int n) {
   uint64_t ret_value = start_value;
-  while (shift_number > 16) {
+  while (n > 16) {
     ret_value = ret_value << 16;
-    shift_number -= 16;
+    n -= 16;
   }
-  ret_value = ret_value << shift_number;
+  ret_value = ret_value << n;
   return ret_value;
 }
 
-/*
- * This function returns the start value shifted to the right by shift_number.
- * Use this function when you want to shift above 30.
- */
-uint64_t MAX7219::bigShiftRight(const uint64_t& start_value, int shift_number) {
+uint64_t MAX7219::bigShiftRight(const uint64_t& start_value, int n) {
   uint64_t ret_value = start_value;
-  while (shift_number > 16) {
+  while (n > 16) {
     ret_value = ret_value >> 16;
-    shift_number -= 16;
+    n -= 16;
   }
-  ret_value = ret_value >> shift_number;
+  ret_value = ret_value >> n;
   return ret_value;
 }
 
@@ -95,33 +87,30 @@ void MAX7219::sendData(const MAX7219_register& reg, const MAX7219_commands& comm
   sendData(reg, cmd_uint, auto_load);
 }
 
-MAX7219::MAX7219(xy size, pin_out& clk_pin, pin_out& din_pin, pin_out& load_pin, unsigned int dc_number,
-                 unsigned int dc_pos)
-    : window(size),
-      clk(clk_pin),
-      din(din_pin),
-      load(load_pin),
-      daisychain_length(dc_number),
-      daisychain_position(dc_pos) {}
+void MAX7219::sendDataRepeated(const MAX7219_register& reg, const MAX7219_commands& command, int repeats) {
+  for (int i = 0; i < repeats; i++) {
+    sendData(reg, command, false);
+  }
+  load.write(1);
+  load.flush();
+}
 
 void MAX7219::write_implementation(xy pos, color col) {
   int shifts = pos.x + (pos.y * 8);
   write_buffer = write_buffer | bigShiftLeft(1, shifts);
 }
 
-void MAX7219::initialize(int set_length) {
-  for (int i = 0; i < set_length; i++) {
-    sendData(MAX7219_register::display_test, MAX7219_commands::display_normal);
-    sendData(MAX7219_register::shutdown, MAX7219_commands::shutdown_normal);
-    sendData(MAX7219_register::decode_mode, MAX7219_commands::decode_none);
-    sendData(MAX7219_register::scan_limit, MAX7219_commands::scan_limit_max);
-    sendData(MAX7219_register::intensity, MAX7219_commands::intensity_base);
-    clear();
-  }
+void MAX7219::initialize() {
+  sendDataRepeated(MAX7219_register::display_test, MAX7219_commands::display_normal, daisychain_length);
+  sendDataRepeated(MAX7219_register::shutdown, MAX7219_commands::shutdown_normal, daisychain_length);
+  sendDataRepeated(MAX7219_register::decode_mode, MAX7219_commands::decode_none, daisychain_length);
+  sendDataRepeated(MAX7219_register::scan_limit, MAX7219_commands::scan_limit_max, daisychain_length);
+  sendDataRepeated(MAX7219_register::intensity, MAX7219_commands::intensity_base, daisychain_length);
 }
 
 void MAX7219::clear() {
   write_buffer = 0;
+  prev_write_buffer = ~0;
   flush();
 }
 
@@ -129,19 +118,23 @@ void MAX7219::flush() {
   unsigned int no_ops = daisychain_length - 1;
   unsigned int pre_ops = daisychain_length - daisychain_position;
   unsigned int post_ops = no_ops - pre_ops;
-  
+
   for (int i = 0; i < 8; i++) {
     MAX7219_register reg = rows[i];
+    uint8_t prev_command = (bigShiftRight(prev_write_buffer, 8 * i) & 0xFF);
     uint8_t command = (bigShiftRight(write_buffer, 8 * i) & 0xFF);
-    for (unsigned int pre = 0; pre < pre_ops; pre++) {
-      sendData(MAX7219_register::no_op, MAX7219_commands::no_op, false);
+    if (prev_command != command) {
+      for (unsigned int pre = 0; pre < pre_ops; pre++) {
+        sendData(MAX7219_register::no_op, MAX7219_commands::no_op, false);
+      }
+      sendData(reg, command, false);
+      for (unsigned int post = 0; post < post_ops; post++) {
+        sendData(MAX7219_register::no_op, MAX7219_commands::no_op, false);
+      }
+      load.write(1);
+      load.flush();
     }
-    sendData(reg, command, false);
-    for (unsigned int post = 0; post < post_ops; post++) {
-      sendData(MAX7219_register::no_op, MAX7219_commands::no_op, false);
-    }
-    load.write(1);
-    load.flush();
   }
+  prev_write_buffer = write_buffer;
   write_buffer = 0;
 }
