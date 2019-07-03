@@ -6,7 +6,7 @@
 // Copyright : stijn.vanwijk@student.hu.nl 2019
 //
 // Distributed under the Boost Software License, Version 1.0.
-// (See accompanying file LICENSE_1_0.txt or copy at 
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 //
 // ==========================================================================
@@ -24,9 +24,7 @@ vector vector::operator*(const vector& rhs) const { return vector{x * rhs.x, y *
 
 vector vector::operator*(const float& rhs) const { return vector{x * rhs, y * rhs}; }
 
-bool vector::operator==(const vector& rhs) const {
-  return ((x == rhs.x) && (y == rhs.y));
-}
+bool vector::operator==(const vector& rhs) const { return ((x == rhs.x) && (y == rhs.y)); }
 
 float vector::magnitude() { return sqrt((x * x) + (y * y)); }
 float vector::squaredMagnitude() { return ((x * x) + (y * y)); }
@@ -41,10 +39,12 @@ vector vector::norm() {
 vector particle::getRealPos() { return real_pos; }
 
 void particle::updateSpeed(const vector& acceleration, const double& delta_time, const float& resis_const) {
+  // Calculate the distance between the particle and middle of field
   float d_middle = ((real_pos.x - x_max * 0.5) * (real_pos.x - x_max * 0.5)) +
                    ((real_pos.y - y_max * 0.5) * (real_pos.y - y_max * 0.5));
-  float modifier = ((d_max - d_middle) / d_max) * 0.9 + 0.1;
-  vector a_resistance = speed * speed.magnitude() * resis_const;  // Misschien speed.x in mooie operators verwerken!
+  float modifier = ((d_max - d_middle) / d_max) * 0.9 + 0.1;  // Closer to the center is greater acceleration.
+  // The modifier makes it easier for particles that are bunched up in a corner to escape.
+  vector a_resistance = speed * speed.magnitude() * resis_const;  // The resistance on the particle
   speed.x = speed.x + ((acceleration.x - a_resistance.x) * delta_time * modifier);
   speed.y = speed.y + ((acceleration.y - a_resistance.y) * delta_time * modifier);
 }

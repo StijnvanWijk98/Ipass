@@ -11,6 +11,8 @@
 //
 // ==========================================================================
 
+// NOTE: All the mathematics are thanks to Ruben Vink
+
 #include "../MAX7219-Library/MAX7219.hpp"
 #include "../windowDecorators/windowDecorator.hpp"
 #include "../MPU6050-Library/MPU6050.hpp"
