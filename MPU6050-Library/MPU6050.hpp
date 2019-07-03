@@ -6,7 +6,7 @@
 // Copyright : stijn.vanwijk@student.hu.nl 2019
 //
 // Distributed under the Boost Software License, Version 1.0.
-// (See accompanying file LICENSE_1_0.txt or copy at 
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 //
 // ==========================================================================
@@ -15,8 +15,8 @@
 #define MPU6050_HPP
 
 #include "MPU6050constants.hpp"
-#include "hwlib.hpp"
-#include "math.h"
+#include "basicInterface.hpp"
+#include "math.h"  // Needed for function getAngleX and getAngleY
 
 using hwlib::cout;
 using hwlib::endl;
@@ -54,13 +54,12 @@ struct errorData {
 /// MPU6050 interface library
 /// \details
 /// This is a library for the MPU6050.\n
-/// It implements an interface for the user.\n
+/// This library implements a accelerometer_interface.\n
+/// The library also interfaces the gyroscope en temperature feature of the MPU6050.\n
 /// The communication protocol is I2C.\n
-/// The appropriate constructor is given.\n
-class MPU6050 {
+/// The appropriate constructor and functions are given.
+class MPU6050 : public accelerometer_interface {
  private:
-  i2c_bus& bus;
-  uint8_t address;
   uint8_t read_buffer;
   double lsb_acc;
   double lsb_gyro;
@@ -112,7 +111,7 @@ class MPU6050 {
   /// You are obligated to give a i2c_bus.\n
   /// When the AD0 is connected to VCC, the address should be 0x69.\n
   /// Call example: auto mpu = MPU6050(bus_bit_banged);
-  MPU6050(i2c_bus& bus, uint8_t address = 0x68) : bus(bus), address(address), read_buffer(0) {
+  MPU6050(i2c_bus& bus, uint8_t address = 0x68) : accelerometer_interface(bus, address), read_buffer(0) {
     writeRegister(MPU6050_register::power, 0x00);
     setFullRange();
   }
@@ -150,26 +149,29 @@ class MPU6050 {
   /// \brief
   /// Get raw accelerometer X-axis
   /// \details
+  /// This function overrides the virtual function from the accelerometer_interface class.\n
   /// This function returns the 16-bits that are found in the two corresponding registers.\n
   /// It returns a int16_t, this is rawdata.\n
   /// Call example: int16_t raw_acc_x = mpu.getAccX();
-  int16_t getAccX();
+  int16_t getAccX() override;
 
   /// \brief
   /// Get raw accelerometer Y-axis
   /// \details
+  /// This function overrides the virtual function from the accelerometer_interface class.\n
   /// This function returns the 16-bits that are found in the two corresponding registers.\n
   /// It returns a int16_t, this is rawdata.\n
   /// Call example: int16_t raw_acc_y = mpu.getAccY();
-  int16_t getAccY();
+  int16_t getAccY() override;
 
   /// \brief
   /// Get raw accelerometer Z-axis
   /// \details
+  /// This function overrides the virtual function from the accelerometer_interface class.\n
   /// This function returns the 16-bits that are found in the two corresponding registers.\n
   /// It returns a int16_t, this is rawdata.\n
   /// Call example: int16_t raw_acc_z = mpu.getAccZ();
-  int16_t getAccZ();
+  int16_t getAccZ() override;
 
   /// \brief
   /// Get rawdata accelerometer XYZ-axis
@@ -214,25 +216,27 @@ class MPU6050 {
   /// \brief
   /// Get angle X-axis
   /// \details
+  /// This function overrides the virtual function from the accelerometer_interface class.\n
   /// This function returns the angle of the MPU6050 in the X-axis.\n
   /// This is a value between -90 and 90 degrees.\n
-  /// The angle is calculated on the data from the accelerometer.\n
+  /// The angle is calculated based on the data from the accelerometer.\n
   /// Call example: int angle_x = mpu.getAngleX();
-  int getAngleX();
+  int getAngleX() override;
 
   /// \brief
   /// Get angle Y-axis
   /// \details
+  /// This function overrides the virtual function from the accelerometer_interface class.\n
   /// This function returns the angle of the MPU6050 in the Y-axis.\n
   /// This is a value between -90 and 90 degrees.\n
-  /// The angle is calculated on the data from the accelerometer.\n
+  /// The angle is calculated based on the data from the accelerometer.\n
   /// Call example: int angle_y = mpu.getAngleY();
-  int getAngleY();
+  int getAngleY() override;
 
   /// \brief
   /// Get temperature
   /// \details
-  /// This function returns the temperature of the current MPU6050 surroundings.\n
+  /// This function returns the temperature of the current MPU6050 temperature sensor.\n
   /// Call example: int temp = mpu.getTemprature();
   int getTemperature();
 };
