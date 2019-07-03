@@ -12,7 +12,7 @@
 // ==========================================================================
 
 #include "../MAX7219-Library/MAX7219.hpp"
-#include "../MAX7219-Library/windowDecorator.hpp"
+#include "../windowDecorators/windowDecorator.hpp"
 #include "../MPU6050-Library/MPU6050.hpp"
 #include "hwlib.hpp"
 
@@ -86,7 +86,7 @@ class vector {
   friend vector operator*(const float& lhs, const vector& rhs) { return vector{lhs * rhs.x, lhs * rhs.y}; }
 
   /// \brief
-  /// output operator vector
+  /// output operator vector to hwlib::ostream
   /// \details
   /// This operator streams the vector to a hwlib::ostream.\n
   /// The operator will give the following result in the ostream: (x,y)\n
@@ -99,14 +99,23 @@ class vector {
     lhs << '(' << x_base << '.' << x_dec << ',' << y_base << '.' << y_dec << ')';
     return lhs;
   }
-  friend std::ostream& operator<<(std::ostream& lhs, const vector& rhs) {
-    int x_base = rhs.x;
-    int y_base = rhs.y;
-    int x_dec = abs((rhs.x - x_base) * 1e7);  // 1e7 is the presicion amount
-    int y_dec = abs((rhs.y - y_base) * 1e7);
-    lhs << '(' << x_base << '.' << x_dec << ',' << y_base << '.' << y_dec << ')';
-    return lhs;
-  }
+
+  // NOT NEEDED!!!!!!!!!!!!!!!!
+
+  /// \brief
+  /// output operator vector to std::ostream
+  /// \details
+  /// This operator streams the vector to a std::ostream.\n
+  /// The operator will give the following result in the ostream: (x,y)\n
+  /// The x and y values are printed in a 7 decimal precision.
+  // friend std::ostream& operator<<(std::ostream& lhs, const vector& rhs) {
+  //   int x_base = rhs.x;
+  //   int y_base = rhs.y;
+  //   int x_dec = abs((rhs.x - x_base) * 1e7);  // 1e7 is the presicion amount
+  //   int y_dec = abs((rhs.y - y_base) * 1e7);
+  //   lhs << '(' << x_base << '.' << x_dec << ',' << y_base << '.' << y_dec << ')';
+  //   return lhs;
+  // }
 
   /// \brief
   /// Magnitude vector
@@ -155,7 +164,7 @@ class particle : public drawable {
   /// \details
   /// The constructor creates a particle object.\n
   /// You are obligated to give a start_pos (xy), size_simulation (xy).\n
-  /// You can change the radius of the particle, but this is not advised when used with simulation.
+  /// You can change the radius of the particle, but this is not advised when used with simulation.\n
   /// Call example: auto part = particle(xy(2,2), xy(8,8));
   particle(const xy& start_pos, const xy& size_simulation, float radius = 0.5) : drawable(start_pos), radius(radius) {
     x_max = size_simulation.x;

@@ -1,31 +1,32 @@
-#include "MPU6050.hpp"
+#include "testFunctions.hpp"
 
 int main() {
-  hwlib::wait_ms(500);
+  /* The program showcases some of the basic functionality of the library.
+   * The functions used can be found in testFunctions.hpp and testFunctions.cpp
+   * For a complete overlook what the library can do, view the doxygen included with the library.
+   */
+  wait_ms(500);
   namespace target = hwlib::target;
   auto scl = target::pin_oc(target::pins::scl1);
   auto sda = target::pin_oc(target::pins::sda1);
   auto i2c_bus = hwlib::i2c_bus_bit_banged_scl_sda(scl, sda);
 
-  auto mpu = mpu6050::MPU6050(i2c_bus);
-  mpu.whoAmI();
-  mpu.calibrate();
+  auto mpu = MPU6050(i2c_bus);
 
-  for (;;) {
-    // mpu6050::accData results_acc = mpu.getAccAll();
-    // cout << "acc x: " << results_acc.acc_x << endl;
-    // cout << "acc y: " << results_acc.acc_y << endl;
-    // cout << "acc z: " << results_acc.acc_z << endl;
-
-    // mpu6050::gyroData results_gyro = mpu.getGyroAll();
-    // cout << "gyro x: " << results_gyro.gyro_x << endl;
-    // cout << "gyro y: " << results_gyro.gyro_y << endl;
-    // cout << "gyro z: " << results_gyro.gyro_z << endl;
-
-    int result_x = mpu.getAngleX();
-    int result_y = mpu.getAngleY();
-    cout << "hoek X: " << result_x << " Y: " << result_y << endl;
-    hwlib::wait_ms(2000);
-  }
+  // ==== TEST: angleX
+  testAngleX(mpu);
+  wait_ms(500);
+  // ==== TEST: angleY
+  testAngleY(mpu);
+  wait_ms(500);
+  // ==== TEST: gyroX
+  testGyroX(mpu);
+  wait_ms(500);
+  // ==== TEST: gyroY
+  testGyroY(mpu);
+  wait_ms(500);
+  // ==== TEST: gyroZ
+  testGyroZ(mpu);
+  wait_ms(500);
   return 0;
 }

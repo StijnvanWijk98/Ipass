@@ -11,8 +11,8 @@
 //
 // ==========================================================================
 
-#ifndef MAX7219_hpp
-#define MAX7219_hpp
+#ifndef MAX7219_HPP
+#define MAX7219_HPP
 
 #include "MAX7219constants.hpp"
 #include "hwlib.hpp"

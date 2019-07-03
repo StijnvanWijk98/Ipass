@@ -9,13 +9,13 @@
 #############################################################################
 
 # source files in this project (main.cpp is automatically assumed)
-SOURCES := particle.cpp MPU6050.cpp MAX7219.cpp windowDecorator.cpp
+SOURCES := windowDecorator.cpp testFunctions.cpp MAX7219.cpp
 
 # header files in this project
-HEADERS := particle.hpp MPU6050.hpp MAX7219.hpp MPU6050constants.hpp MAX7219constants.hpp windowDecorator.hpp 
+HEADERS := windowDecorator.hpp testFunctions.hpp MAX7219.hpp
 
 # other places to look for files for this project
-SEARCH  := ../MPU6050-Library ../MAX7219-Library ../windowDecorators
+SEARCH  := ../MAX7219-Library
 
 # set RELATIVE to the next higher directory 
 # and defer to the appropriate Makefile.* there

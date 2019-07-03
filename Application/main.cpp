@@ -1,6 +1,8 @@
 #include "particle.hpp"
 
 int main() {
+  /* The program showcases some a implementation of a physics simulator.
+   */
   hwlib::wait_ms(500);
   namespace target = hwlib::target;
   auto scl = target::pin_oc(target::pins::scl1);

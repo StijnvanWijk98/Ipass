@@ -9,10 +9,10 @@
 #############################################################################
 
 # source files in this project (main.cpp is automatically assumed)
-SOURCES := MPU6050.cpp
+SOURCES := MPU6050.cpp testFunctions.cpp
 
 # header files in this project
-HEADERS := MPU6050.hpp MPU6050constants.hpp
+HEADERS := MPU6050.hpp MPU6050constants.hpp testFunctions.hpp
 
 # other places to look for files for this project
 SEARCH  := 

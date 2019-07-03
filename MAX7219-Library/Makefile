@@ -9,10 +9,10 @@
 #############################################################################
 
 # source files in this project (main.cpp is automatically assumed)
-SOURCES := MAX7219.cpp windowDecorator.cpp
+SOURCES := MAX7219.cpp testFunctions.cpp
 
 # header files in this project
-HEADERS := MAX7219.hpp MAX7219constants.hpp windowDecorator.hpp
+HEADERS := MAX7219.hpp MAX7219constants.hpp testFunctions.hpp
 
 # other places to look for files for this project
 SEARCH  := 
