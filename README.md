@@ -7,3 +7,5 @@ The repository includes the application and libraries made for my project.
 You can find the hwlib here:https://github.com/wovo/hwlib, and the bmptk here: https://github.com/wovo/bmptk
 2. Clone this library
 3. You have all the tools ready!
+
+P.S. In the main from every library you can find some function calls to show some of the basic possibilities of the libraries.
