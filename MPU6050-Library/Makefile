@@ -12,7 +12,7 @@
 SOURCES := MPU6050.cpp testFunctions.cpp
 
 # header files in this project
-HEADERS := MPU6050.hpp MPU6050constants.hpp testFunctions.hpp basicInterface.hpp
+HEADERS := MPU6050.hpp MPU6050constants.hpp testFunctions.hpp abstractAccelerometer.hpp
 
 # other places to look for files for this project
 SEARCH  := 

@@ -15,7 +15,7 @@
 #define MPU6050_HPP
 
 #include "MPU6050constants.hpp"
-#include "basicInterface.hpp"
+#include "abstractAccelerometer.hpp"
 #include "math.h"  // Needed for function getAngleX and getAngleY
 
 using hwlib::cout;
