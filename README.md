@@ -11,4 +11,7 @@ You can find the hwlib here:https://github.com/wovo/hwlib, and the bmptk here: h
 # Doxygen
 For every library there is a Doxygen, here you can find all the features that the library includes.
 
+# Physics
+The mathematics of the 2D physics are thanks to Ruben Vink. 
+
 P.S. In the main from every library you can find some function calls to show some of the basic possibilities of the libraries.
