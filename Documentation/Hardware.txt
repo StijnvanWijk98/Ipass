@@ -1,0 +1,5 @@
+I used the following hardware in my Ipass:
+- MPU6050 sensor
+- multiple MAX7219 with 8x8 led matrix
+- Arduino due
+- jumperwires
