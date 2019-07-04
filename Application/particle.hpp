@@ -1,3 +1,6 @@
+#ifndef PARTICLE_HPP
+#define PARTICLE_HPP
+
 // ==========================================================================
 //
 // Author    : Stijn van Wijk
@@ -361,3 +364,4 @@ class simulation {
     }
   }
 };
+#endif

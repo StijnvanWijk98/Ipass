@@ -13,8 +13,10 @@ using hwlib::i2c_bus;
 /// This abstract class can be used to implement a I2C based accelerometer.
 class accelerometer_interface {
  protected:
-  i2c_bus& bus;     /// \brief Communication bus
-  uint8_t address;  /// \brief I2C address on the bus
+ /// \brief Communication bus
+  i2c_bus& bus; 
+  /// \brief I2C address on the bus    
+  uint8_t address;  
 
  public:
   /// \brief

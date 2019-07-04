@@ -18,10 +18,10 @@ int main() {
   auto matrix2 = MAX7219(size, clk, din, load, 4, 2);
   auto matrix3 = MAX7219(size, clk, din, load, 4, 3);
   auto matrix4 = MAX7219(size, clk, din, load, 4, 4);
+  matrix.initialize();
 
   array<window*, 4> windows = {&matrix, &matrix2, &matrix3, &matrix4};
   auto screen = combine_windows<4>(windows, 1, 4, size_total, true);
-  matrix.initialize();
   screen.clear();
 
   auto mpu = MPU6050(i2c_bus);
@@ -43,41 +43,10 @@ int main() {
   simu.drawParticles();
 
   for (;;) {
-    simu.updateAcceleration();  // 5000 mus n=2 with mpu
+    simu.updateAcceleration();
     simu.updateParticles();
-    simu.drawParticles();  // 3000 mus for n=2
+    simu.drawParticles();
   }
 
   return 0;
 }
-
-// ================ Screentest
-// xy size_matrix(8, 8);
-// xy total_size(16, 8);
-// MAX7219 matrix = MAX7219(size_matrix, clk, din, load, 2, 1);
-// MAX7219 matrix2 = MAX7219(size_matrix, clk, din, load, 2, 2);
-// matrix.initialize(2);
-// array<window*, 2> test = {&matrix, &matrix2};
-// auto screen = combine_windows<2>(test, 1, 2, total_size, true);
-
-// ================== Particletest
-// particle p1 = particle(xy(5, 4), total_size);
-// for (;;) {
-//   p1.draw(screen);
-//   screen.flush();
-//   p1.userInput();
-//   p1.updatePosition();
-// }
-
-// ================== mpu6050Test
-// auto mpu = mpu6050::MPU6050(i2c_bus);
-// mpu.whoAmI();
-
-// int result_x = 0;
-// int result_y = 0;
-
-// for(;;){
-//   result_x = mpu.getAngleX();
-//   result_y = mpu.getAngleY();
-//   cout << "hoek X: " << result_x << " Y: " << result_y << endl;
-// }
